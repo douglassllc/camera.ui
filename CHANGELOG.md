@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.5](https://github.com/douglassllc/camera.ui/compare/v1.3.4...v1.3.5) (2023-12-28)
+
+
+### Features
+
+* **back-end:** add environment variable override to log level ([8edbbff](https://github.com/douglassllc/camera.ui/commit/8edbbff69aff61b27579a63f1c1bdff75376e0c1))
+* **front-end:** add Health and Status last update timestamp ([b8a4a96](https://github.com/douglassllc/camera.ui/commit/b8a4a96bd93797f1b3631714292188972aab7b83))
+
 ### [1.3.4](https://github.com/douglassllc/camera.ui/compare/v1.3.3...v1.3.4) (2023-12-27)
 
 
