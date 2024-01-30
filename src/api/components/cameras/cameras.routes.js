@@ -579,4 +579,28 @@ export const routesConfig = (app) => {
     PermissionMiddleware.onlyMasterCanDoThisAction,
     CamerasController.shutdown,
   ]);
+
+  /**
+   * @swagger
+   * /api/cameras/{name}/cameracontrol:
+   *   put:
+   *     tags: [Cameras]
+   *     security:
+   *       - bearerAuth: []
+   *     summary: Camera Control
+   *     responses:
+   *       200:
+   *         description: Successfull
+   *       401:
+   *         description: Unauthorized
+   *       404:
+   *         description: Not found
+   *       500:
+   *         description: Internal server error
+   */
+  app.patch('/api/cameras/:name/cameracontrol', [
+    ValidationMiddleware.validJWTNeeded,
+    PermissionMiddleware.minimumPermissionLevelRequired('cameras:edit'),
+    CamerasController.changeCameraControl,
+  ]);
 };
