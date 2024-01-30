@@ -524,3 +524,42 @@ export const shutdown = async (req, res) => {
     });
   }
 };
+
+export const changeCameraControl = async (req, res) => {
+  try {
+    let camera = await CamerasModel.findByName(req.params.name);
+
+    if (!camera) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: 'Camera not exists',
+      });
+    }
+
+    const controller = CameraController.cameras.get(req.params.name);
+
+    if (!controller || (controller && !controller.iot)) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: 'Camera controller not exists',
+      });
+    }
+
+    const topic = `unmanned/${camera.name}/control`;
+
+    const message = {
+      cmd: 'camera-control',
+      command: req.body.command,
+      direction: req.body.direction,
+    };
+
+    controller.iot.publishMqtt(topic, message);
+
+    res.status(204).send({});
+  } catch (error) {
+    res.status(500).send({
+      statusCode: 500,
+      message: error.message,
+    });
+  }
+};

@@ -12,7 +12,7 @@
         v-card-title.video-card-top-title.tw-flex.tw-justify-between.tw-items-center
           span.font-weight-bold.text-truncate {{ camera.name }}
           .grid.grid-rows-1.grid-flow-col.gap-2
-            v-icon.battery.tw-text-white {{ icons['mdiBatteryHigh'] }} 
+            <!-- v-icon.battery.tw-text-white {{ icons['mdiBatteryHigh'] }} -->
             v-badge(dot inline v-if="status" :color="loading || offline ? 'red' : 'green'")
         v-divider
 
@@ -60,6 +60,13 @@
             .tw-block.tw-p-2
               v-icon.tw-p-1.tw-cursor-pointer.controller-button(size="22" @click="handleStartStop") {{ !play ? icons['mdiPlay'] : icons['mdiPause'] }}
             .tw-ml-auto
+            .tw-block.tw-p-2.tw-pr-0(v-if="!hideCameraControls")
+              v-icon.tw-p-1.tw-cursor-pointer.controller-button(size="22" @click="sendCameraControl('ZOOM_OUT')") {{ icons['mdiMinusCircleOutline'] }}
+              v-icon.tw-p-1.tw-cursor-pointer.controller-button(size="22" @click="sendCameraControl('ZOOM_IN')") {{ icons['mdiPlusCircleOutline'] }}
+              v-icon.tw-p-1.tw-cursor-pointer.controller-button(size="22" @click="sendCameraControl('PAN_LEFT')") {{ icons['mdiArrowLeftCircleOutline'] }}
+              v-icon.tw-p-1.tw-cursor-pointer.controller-button(size="22" @click="sendCameraControl('PAN_RIGHT')") {{ icons['mdiArrowRightCircleOutline'] }}
+              v-icon.tw-p-1.tw-cursor-pointer.controller-button(size="22" @click="sendCameraControl('PAN_UP')") {{ icons['mdiArrowUpCircleOutline'] }}
+              v-icon.tw-p-1.tw-cursor-pointer.controller-button(size="22" @click="sendCameraControl('PAN_DOWN')") {{ icons['mdiArrowDownCircleOutline'] }}
             .tw-ml-auto
             .tw-block.tw-p-2.tw-pr-0(v-if="!hideIndicatorReload")
               v-icon.tw-p-1.tw-cursor-pointer.controller-button(size="22" @click="refreshStream") {{ icons['mdiRefresh'] }}
@@ -106,11 +113,26 @@ import {
   mdiBatteryHigh,
   mdiBatteryMedium,
   mdiBatteryLow,
+  mdiMinusCircleOutline,
+  mdiPlusCircleOutline,
+  mdiArrowLeftCircleOutline,
+  mdiArrowRightCircleOutline,
+  mdiArrowUpCircleOutline,
+  mdiArrowDownCircleOutline,
 } from '@mdi/js';
 
-import { getCameraSnapshot, getCameraStatus } from '@/api/cameras.api';
+import { getCameraSnapshot, getCameraStatus, changeCameraControl } from '@/api/cameras.api';
 
 const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const CAMERA_CONTROLS = {
+  ZOOM_IN: { command: 'zoom', direction: 'in' },
+  ZOOM_OUT: { command: 'zoom', direction: 'out' },
+  PAN_LEFT: { command: 'pan', direction: 'left' },
+  PAN_RIGHT: { command: 'pan', direction: 'right' },
+  PAN_UP: { command: 'pan', direction: 'up' },
+  PAN_DOWN: { command: 'pan', direction: 'down' },
+};
 
 export default {
   components: {
@@ -124,6 +146,7 @@ export default {
     hideIndicatorAudio: Boolean,
     hideIndicatorFullscreen: Boolean,
     hideIndicatorReload: Boolean,
+    hideCameraControls: Boolean,
     noLink: Boolean,
     notifications: Boolean,
     refreshSnapshot: Boolean,
@@ -152,6 +175,12 @@ export default {
       mdiBatteryHigh,
       mdiBatteryMedium,
       mdiBatteryLow,
+      mdiMinusCircleOutline,
+      mdiPlusCircleOutline,
+      mdiArrowLeftCircleOutline,
+      mdiArrowRightCircleOutline,
+      mdiArrowUpCircleOutline,
+      mdiArrowDownCircleOutline,
     },
     images: [],
     imgSource: '',
@@ -166,12 +195,6 @@ export default {
     snapshotTimeout: null,
     streamTimeout: null,
     timeout: 60,
-    // eslint-disable-next-line
-    actions: [ 
-      { title: 'Timezone' }, 
-      { title: 'Reboot' }, 
-      { title: 'Shutdown' } 
-    ],
   }),
 
   async mounted() {
@@ -209,14 +232,9 @@ export default {
   },
 
   methods: {
-    updateTimezone() {
-      alert('timezone');
-    },
-    reboot() {
-      alert('reboot');
-    },
-    shutdown() {
-      alert('shutdown');
+    sendCameraControl(cmd) {
+      console.log(`sendCameraControl: ${cmd}`);
+      changeCameraControl(this.camera.name, CAMERA_CONTROLS[cmd]);
     },
     closeFullscreen() {
       this.fullscreen = false;
