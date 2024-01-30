@@ -5,7 +5,8 @@
 
 This fork is to continue development of this project by upgrading and maintaining dependencies.  Additionally, this fork will address adding functionality to support a more IoT.
 
-- **Camera Controls**: ability to set the time zone, reboot, and shutdown
+- **Camera Controls**: ability to pan and zoom
+- **Device Controls**: ability to set the time zone, reboot, and shutdown
 - **IoT Health & Status**: receive IoT messages via MQTT and update cameras
 - **Docker**: added docker build, publish, and docker compose support
 
