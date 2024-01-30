@@ -9,6 +9,13 @@ All notable changes to this project will be documented in this file. See [standa
 
 * **IoT:** camera controls for pan and zoom ([b95396a](https://github.com/douglassllc/camera.ui/commit/b95396ac2e9f45f8fefb1a68d59e440096a97e61))
 
+### [1.3.6](https://github.com/douglassllc/camera.ui/compare/v1.3.5...v1.3.6) (2024-01-30)
+
+
+### Features
+
+* **IoT:** camera controls for pan and zoom ([b95396a](https://github.com/douglassllc/camera.ui/commit/b95396ac2e9f45f8fefb1a68d59e440096a97e61))
+
 ### [1.3.5](https://github.com/douglassllc/camera.ui/compare/v1.3.4...v1.3.5) (2023-12-28)
 
 
